@@ -1,118 +1,98 @@
-//index.js
+let WebIM = require("../../utils/WebIM")["default"];
+let disp = require("../../utils/broadcast");
+
 const app = getApp()
 
 Page({
   data: {
-    avatarUrl: './user-unlogin.png',
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: ''
+    currentTab: 0,
+    grids: 5,
+    swiperList: 0,
+    list: [],
   },
 
-  onLoad: function() {
-    if (!wx.cloud) {
-      wx.redirectTo({
-        url: '../chooseLib/chooseLib',
-      })
-      return
-    }
+  onLoad: function () {
+    
+    this.getdata()
+    //console.log("app.globleData:" + app.globalData.OpenId)
+    wx.clearStorage()
+  },
 
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
-              })
-            }
-          })
-        }
-      }
+  onShow: function () {
+    this.getdata()
+  },
+
+  onPullDownRefresh: function () {
+    this.getdata()
+  },
+
+  bindViewTap: function () {
+    wx.navigateTo({
+      url: '../add/logs'
     })
   },
 
-  onGetUserInfo: function(e) {
-    if (!this.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo
-      })
-    }
+  goSearch(e) {
+    wx.navigateTo({
+      
+      url: '../search/search',
+    })
   },
 
-  onGetOpenid: function() {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
+  click: function (e) {
+    console.log(e.currentTarget.dataset.id)
+    switch (e.currentTarget.dataset.id){
+      case 0:
         wx.navigateTo({
-          url: '../userConsole/userConsole',
+          url: '../classify/books/books'
         })
+        break;
+      case 1:
+        wx.navigateTo({
+          url: '../classify/clothes/clothes'
+        })
+        break;
+      case 2:
+        wx.navigateTo({
+          url: '../classify/phones/phones'
+        })
+        break;
+      case 3:
+        wx.navigateTo({
+          url: '../classify/snacks/snacks'
+        })
+        break;
+      case 4:
+        wx.navigateTo({
+          url: '../classify/others/others'
+        })
+        break;
+    }
+    
+  },
+   goDetail(e) {
+    wx.navigateTo({
+      url: `/pages/detail/detail?id=${e.currentTarget.dataset.id}`,
+    })
+  },
+    getdata: function () {
+    const db = wx.cloud.database()
+    // 查询当前用户所有的 counters
+    db.collection('goods').get({
+      success: res => {
+        if (res.data.length) {
+          console.log('[数据库] [查询记录] 成功: ', res.data);
+          this.setData({
+            list: res.data
+          })
+        } 
       },
       fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
+        wx.showToast({
+          icon: 'none',
+          title: '查询记录失败'
         })
-      }
-    })
-  },
-
-  // 上传图片
-  doUpload: function () {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-        
-        // 上传图片
-        const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-            
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
-          }
-        })
-
-      },
-      fail: e => {
-        console.error(e)
+        console.error('[数据库] [查询记录] 失败：', err)
       }
     })
   },
