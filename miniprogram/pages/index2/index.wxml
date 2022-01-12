@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  
+  <view class="info_list">
+    <block>
+        <view class="weui_cell">
+            <view class="weui_cell_hd"  data-id="{{0}}"bindtap="click">
+                <image src='../../image/release.png'></image></view>
+            <view class="weui_cell_bd"  data-id="{{1}}"bindtap="click">
+                <view class="weui_cell_bd_p"> {{'我发布的'}} </view>
+            </view>
+        </view>
+    </block>
+    <block>
+        <view class="weui_cell"> 
+            <view class="weui_cell_hd"  data-id="{{2}}"bindtap="click">
+                <image src='../../image/like.png'></image></view>
+            <view class="weui_cell_bd"  data-id="{{3}}"bindtap="click">
+                <view class="weui_cell_bd_p"> {{'我收藏的'}} </view>
+            </view>
+        </view>
+    </block>
+  </view>
+</view>
+

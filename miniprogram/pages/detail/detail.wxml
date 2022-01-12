@@ -1,0 +1,55 @@
+<!--miniprogram/pages/detail.wxml-->
+<view class="banner">
+    <swiper class="swiper" autoplay='true' indicatorDots='true' interval='3000' vertical="{{false}}" duration='1000'circular='true'>
+      <block wx:for="{{detail[0].image}}" wx:key="{{detail[0].image.length}}">
+        <swiper-item>
+          <image src="{{item}}"  mode="aspectFill" class="slide-image" />
+        </swiper-item>
+      </block>
+    </swiper>
+
+ </view> 
+
+ <view class='box' wx:for='{{detail}}' wx:key='{{index}}'>
+      <text class='title'>{{item.name}}</text>
+      <text>类别：{{item.category}}</text>
+      <text>价格：{{item.price}}</text>
+      <text>说明：{{item.info}}</text>
+     <!-- <text class='see'>{{item.id}} 人浏览</text>-->
+  </view>
+
+<!--<view class='share'>
+  <image src='../../image/share.png'></image>
+  <button open-type='share'></button>
+</view>-->
+
+
+
+ <view class='collect'>
+ <button type="bindCollect" mode="default" class="circle" >
+  <view wx:if='{{!collected}}'>
+     <image bindtap="bindCollect"
+     src='../../image/like.png'></image>
+     </view>
+  <view wx:if='{{collected}}'>
+      <image bindtap="bindCollect" 
+       src='../../image/like1.png'></image>
+   </view>
+   </button>
+</view>
+
+<view class='chat' catchtap='into_chatRoom'>
+<button>
+  <image src='../../image/chat.png'></image>
+</button>
+</view>
+
+<view class='share'>
+<button open-type='share'>
+ <image src='../../image/share.png'> </image>
+   </button>
+</view>
+
+
+
+

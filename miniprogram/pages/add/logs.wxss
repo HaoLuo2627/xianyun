@@ -1,0 +1,67 @@
+page{
+  background: #eee;
+}
+.baseInfo{
+  padding:20rpx 10rpx;
+}
+.baseInfo text{
+  font-size: 28rpx;
+  color: #6f6f6f;
+}
+.list{
+  color: #6f6f6f;
+  font-size: 32rpx;
+}
+.name,.category,.phone,.info{
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+.name input,.phone input,.info input{
+  text-align:right;
+}
+button{
+  background-color:  #66cdAA;
+  color: #fff;
+  position: flex;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.modal view{
+  text-align: center;
+}
+
+.question-images-area {
+  padding: 40rpx 0;
+}
+
+.question-images-tool {
+  display: flex;
+  align-items: center;
+}
+
+.question-images {
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.q-image-wrap {
+  width: 31%;
+  margin-right: 10rpx;
+}
+
+.q-image {
+  flex: 1;
+  height: 200rpx;
+  width: 100%;
+}
+
+.q-image-remover {
+  text-align: center;
+}

@@ -1,0 +1,11 @@
+<!--pages/release.wxml-->
+<view class='box' wx:for='{{list}}' wx:key='{{index}}' data-id='{{item._id}}' bindtap='goDetail'>
+    <image src='{{item.image[0]}}'></image>
+    <view>
+      <text class='title'>{{item.name}}</text>
+      <text>类别：{{item.category}}</text>
+      <text>价格：{{item.price}}</text>
+    </view> 
+    <button data-id='{{item._id}}' catchtap='XiuGai' > 修改 </button>
+    <button data-id='{{item._id}}' catchtap='ShanChu'> 删除 </button>
+  </view>
